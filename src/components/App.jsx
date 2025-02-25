@@ -2,6 +2,8 @@ import "../styles/App.css";
 import Scoreboard from "./Scoreboard";
 import logo from "../assets/pokeball.svg";
 import background from "../assets/background.png";
+import Board from "./Board";
+import GameOver from "./GameOver";
 
 function App() {
   const pokemons = [
@@ -114,8 +116,8 @@ function App() {
         backgroundImage: `url(${background})`,
       }}
     >
-      <header>
-        <div className="flex justify-center gap-2">
+      <header className="flex flex-col items-center">
+        <div className="flex justify-center gap-2 mb-4">
           <img
             className="size-8 drop-shadow-[2px_2px_0_black]"
             src={logo}
@@ -135,54 +137,9 @@ function App() {
       </header>
 
       <main className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {pokemons.map((pokemon) => (
-            <div
-              key={pokemon.id}
-              className="bg-black/30 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105"
-            >
-              <div className="relative h-60 overflow-hidden">
-                <img
-                  className="w-full h-full object-cover object-center"
-                  src={pokemon.imagen}
-                  alt={pokemon.nombre}
-                />
-                <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100">
-                  <p className="text-6xl text-white/50">◓</p>
-                </div>
-              </div>
-              <div className="p-3">
-                <h3 className="text-white text-center font-semibold text-2xl mb-1.5">
-                  {pokemon.nombre}
-                </h3>
-              </div>
-            </div>
-          ))}
-        </div>
+        <Board pokemons={pokemons} />
       </main>
-      <div className="fixed  inset-0 flex flex-col items-center justify-center  bg-black/50 ">
-        <div className="bg-white p-8 rounded-2xl shadow-lg text-center max-w-sm w-full">
-          <h2 className="text-3xl font-bold mb-3  ">Game Over</h2>
-          <img
-            src={logo}
-            alt="pokeball"
-            className="w-24 h-24 object-center max-w-xs mx-auto"
-          />
-          <p className="mt-4 text-lg mb-2">
-            Your final score is:{" "}
-            <span className="text-red-400 text-xl font-semibold">4</span>
-          </p>
-
-          <div className="flex gap-4 justify-center">
-            <button className="font-bold py-2 px-4 rounded-md hover:bg-red-500/30 shadow-lg">
-              Play Again
-            </button>
-            <button className="font-bold py-2 px-4 rounded-md hover:bg-red-500/30 shadow-lg">
-              Quit
-            </button>
-          </div>
-        </div>
-      </div>
+      <GameOver />
     </div>
   );
 }
