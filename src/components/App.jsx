@@ -14,19 +14,43 @@ function App() {
   });
 
   const [pokemons, setPokemons] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchRandomPokemons() {
+      setIsLoading(true);
+      setError(null);
       try {
         const data = await getRandomPokemon(P);
         setPokemons(data);
-      } catch (error) {
-        console.error("Error fetching Pokemon:", error);
+      } catch {
+        setError("Something went wrong. Please try again later.");
+      } finally {
+        setIsLoading(false);
       }
     }
 
     fetchRandomPokemons();
   }, []);
+
+  function renderPokemons() {
+    if (isLoading) {
+      return (
+        <div className="text-center">
+          <p className="text-2xl text-white font-bold shadow-lg">Loading ...</p>
+        </div>
+      );
+    }
+    if (error) {
+      return (
+        <div className="text-2xl text-white font-bold">
+          <p>{error}</p>
+        </div>
+      );
+    }
+    return <Board pokemons={pokemons} />;
+  }
 
   return (
     <div
@@ -55,10 +79,8 @@ function App() {
         <Scoreboard />
       </header>
 
-      <main className="max-w-7xl mx-auto">
-        <Board pokemons={pokemons} />
-      </main>
-      <GameOver />
+      <main className="max-w-7xl mx-auto">{renderPokemons()}</main>
+      {/* <GameOver /> */}
     </div>
   );
 }

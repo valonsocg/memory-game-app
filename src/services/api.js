@@ -18,7 +18,7 @@ async function getRandomPokemon(P) {
 
   return pokemonData.map((pokemon) => ({
     id: pokemon.id,
-    name: pokemon.name,
+    name: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
     image: pokemon.sprites.front_default,
   }));
 }
