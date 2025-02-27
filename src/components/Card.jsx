@@ -1,7 +1,7 @@
 export default function Card({ pokemon }) {
   return (
     <>
-      <div className="relative h-60 overflow-hidden">
+      <div className="relative h-60 overflow-hidden cursor-pointer">
         <img
           className="w-full h-full object-cover object-center"
           src={pokemon.imagen}

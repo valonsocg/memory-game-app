@@ -15,10 +15,10 @@ export default function GameOver() {
         </p>
 
         <div className="flex gap-4 justify-center">
-          <button className="font-bold py-2 px-4 rounded-md hover:bg-red-500/30 shadow-lg">
+          <button className="font-bold py-2 px-4 rounded-md hover:bg-red-500/30 shadow-lg cursor-pointer">
             Play Again
           </button>
-          <button className="font-bold py-2 px-4 rounded-md hover:bg-red-500/30 shadow-lg">
+          <button className="font-bold py-2 px-4 rounded-md hover:bg-red-500/30 shadow-lg cursor-pointer">
             Quit
           </button>
         </div>
