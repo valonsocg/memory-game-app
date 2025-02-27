@@ -6,7 +6,7 @@ import Board from "./Board";
 import GameOver from "./GameOver";
 import { useEffect, useState } from "react";
 import { Pokedex } from "pokeapi-js-wrapper";
-import getRandomPokemon from "../services/api";
+import getRandomPokemon, { shuffleArray } from "../services/api";
 
 function App() {
   const P = new Pokedex({
@@ -16,6 +16,8 @@ function App() {
   const [pokemons, setPokemons] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [clickedIds, setClickedIds] = useState([]);
+  const [gameover, setGameover] = useState(false);
 
   useEffect(() => {
     async function fetchRandomPokemons() {
@@ -34,6 +36,15 @@ function App() {
     fetchRandomPokemons();
   }, []);
 
+  function handlePokemonClick(id) {
+    if (clickedIds.includes(id)) {
+      setGameover(true);
+    } else {
+      setClickedIds([...clickedIds, id]);
+      setPokemons((prevState) => shuffleArray(prevState));
+    }
+  }
+
   function renderPokemons() {
     if (isLoading) {
       return (
@@ -49,7 +60,7 @@ function App() {
         </div>
       );
     }
-    return <Board pokemons={pokemons} />;
+    return <Board pokemons={pokemons} onPokemonClick={handlePokemonClick} />;
   }
 
   return (
@@ -80,7 +91,7 @@ function App() {
       </header>
 
       <main className="max-w-7xl mx-auto">{renderPokemons()}</main>
-      {/* <GameOver /> */}
+      {gameover && <GameOver />}
     </div>
   );
 }

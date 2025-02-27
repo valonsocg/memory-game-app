@@ -1,7 +1,10 @@
-export default function Card({ pokemon }) {
+export default function Card({ pokemon, onClick }) {
   return (
     <>
-      <div className="relative h-60 overflow-hidden cursor-pointer">
+      <div
+        className="relative h-60 overflow-hidden cursor-pointer"
+        onClick={() => onClick(pokemon.id)}
+      >
         <img
           className="w-full h-full object-cover object-center"
           src={pokemon.image}

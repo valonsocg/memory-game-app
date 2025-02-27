@@ -23,4 +23,13 @@ async function getRandomPokemon(P) {
   }));
 }
 
+export function shuffleArray(array) {
+  const shuffled = [...array]; // Copiar el array original
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1)); // Índice aleatorio
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Intercambiar elementos
+  }
+  return shuffled;
+}
+
 export default getRandomPokemon;
