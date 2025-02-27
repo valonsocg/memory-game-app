@@ -4,110 +4,29 @@ import logo from "../assets/pokeball.svg";
 import background from "../assets/background.png";
 import Board from "./Board";
 import GameOver from "./GameOver";
+import { useEffect, useState } from "react";
+import { Pokedex } from "pokeapi-js-wrapper";
+import getRandomPokemon from "../services/api";
 
 function App() {
-  const pokemons = [
-    {
-      id: 1,
-      nombre: "Bulbasaur",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png",
-    },
-    {
-      id: 2,
-      nombre: "Ivysaur",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/002.png",
-    },
-    {
-      id: 3,
-      nombre: "Venusaur",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/003.png",
-    },
-    {
-      id: 4,
-      nombre: "Charmander",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/004.png",
-    },
-    {
-      id: 5,
-      nombre: "Charmeleon",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/005.png",
-    },
-    {
-      id: 6,
-      nombre: "Charizard",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/006.png",
-    },
-    {
-      id: 7,
-      nombre: "Squirtle",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/007.png",
-    },
-    {
-      id: 8,
-      nombre: "Wartortle",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/008.png",
-    },
-    {
-      id: 9,
-      nombre: "Blastoise",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/009.png",
-    },
-    {
-      id: 10,
-      nombre: "Caterpie",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/010.png",
-    },
-    {
-      id: 11,
-      nombre: "Metapod",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/011.png",
-    },
-    {
-      id: 12,
-      nombre: "Butterfree",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/012.png",
-    },
-    {
-      id: 13,
-      nombre: "Weedle",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/013.png",
-    },
-    {
-      id: 14,
-      nombre: "Kakuna",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/014.png",
-    },
-    {
-      id: 15,
-      nombre: "Beedrill",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/015.png",
-    },
-    {
-      id: 16,
-      nombre: "Pidgey",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/016.png",
-    },
-    {
-      id: 17,
-      nombre: "Pidgeotto",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/017.png",
-    },
-    {
-      id: 18,
-      nombre: "Pidgeot",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/018.png",
-    },
-    {
-      id: 19,
-      nombre: "Rattata",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/019.png",
-    },
-    {
-      id: 20,
-      nombre: "Raticate",
-      imagen: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/020.png",
-    },
-  ];
+  const P = new Pokedex({
+    cacheImages: true,
+  });
+
+  const [pokemons, setPokemons] = useState([]);
+
+  useEffect(() => {
+    async function fetchRandomPokemons() {
+      try {
+        const data = await getRandomPokemon(P);
+        setPokemons(data);
+      } catch (error) {
+        console.error("Error fetching Pokemon:", error);
+      }
+    }
+
+    fetchRandomPokemons();
+  }, []);
 
   return (
     <div
