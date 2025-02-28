@@ -1,9 +1,9 @@
 import logo from "../assets/pokeball.svg";
-export default function GameOver({ score, highScore, onRestart }) {
+export default function Winner({ score, highScore, onRestart }) {
   return (
     <div className="fixed  inset-0 flex flex-col items-center justify-center  bg-black/50 ">
       <div className="bg-white p-8 rounded-2xl shadow-lg text-center max-w-sm w-full">
-        <h2 className="text-3xl font-bold mb-3  ">Game Over</h2>
+        <h2 className="text-3xl font-bold mb-3  ">You Win</h2>
         <img
           src={logo}
           alt="pokeball"

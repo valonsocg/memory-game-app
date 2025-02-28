@@ -7,6 +7,7 @@ import GameOver from "./GameOver";
 import { useEffect, useState } from "react";
 import { Pokedex } from "pokeapi-js-wrapper";
 import getRandomPokemon, { shuffleArray } from "../services/api";
+import Winner from "./Winner";
 
 function App() {
   const P = new Pokedex({
@@ -19,30 +20,46 @@ function App() {
   const [clickedIds, setClickedIds] = useState([]);
   const [gameover, setGameover] = useState(false);
 
-  useEffect(() => {
-    async function fetchRandomPokemons() {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const data = await getRandomPokemon(P);
-        setPokemons(data);
-      } catch {
-        setError("Something went wrong. Please try again later.");
-      } finally {
-        setIsLoading(false);
-      }
-    }
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
 
+  async function fetchRandomPokemons() {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const data = await getRandomPokemon(P);
+      setPokemons(data);
+    } catch {
+      setError("Something went wrong. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+  useEffect(() => {
     fetchRandomPokemons();
   }, []);
 
   function handlePokemonClick(id) {
     if (clickedIds.includes(id)) {
+      setHighScore((prevHigh) => Math.max(prevHigh, score));
+
       setGameover(true);
     } else {
+      setScore((prevState) => {
+        const newScore = prevState + 1;
+        setHighScore((prevHigh) => Math.max(prevHigh, newScore));
+        return newScore;
+      });
       setClickedIds([...clickedIds, id]);
       setPokemons((prevState) => shuffleArray(prevState));
     }
+  }
+
+  function handleRestart() {
+    setGameover(false);
+    setScore(0);
+    setClickedIds([]);
+    fetchRandomPokemons();
   }
 
   function renderPokemons() {
@@ -65,7 +82,7 @@ function App() {
 
   return (
     <div
-      className="flex flex-col min-h-screen bg-sky-300 py-12 px-4 sm:px-6 lg:px-8 bg-cover bg-no-repeat bg-center"
+      className="flex flex-col min-h-screen bg-sky-300 py-12 px-4 sm:px-6 lg:px-8 bg-cover bg-no-repeat bg-center font-pixel"
       style={{
         backgroundImage: `url(${background})`,
       }}
@@ -87,11 +104,22 @@ function App() {
           </h1>
         </div>
 
-        <Scoreboard />
+        <Scoreboard score={score} highScore={highScore} />
       </header>
-
       <main className="max-w-7xl mx-auto">{renderPokemons()}</main>
-      {gameover && <GameOver />}
+      {gameover && (
+        <GameOver
+          score={score}
+          highScore={highScore}
+          onRestart={handleRestart}
+        />
+      )}
+      {score === 10 && (
+        <Winner score={score} highScore={highScore} onRestart={handleRestart} />
+      )}
+      <footer className="text-center text-blue-600 text-sm py-4 mt-4">
+        Made by <span className="font-semibold text-white">@valonsocg</span>
+      </footer>
     </div>
   );
 }

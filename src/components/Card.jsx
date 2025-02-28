@@ -15,7 +15,7 @@ export default function Card({ pokemon, onClick }) {
         </div>
       </div>
       <div className="p-3">
-        <h3 className="text-white text-center font-semibold text-2xl mb-1.5">
+        <h3 className="text-gray-300 text-center font-semibold text-lg mb-1.5">
           {pokemon.name}
         </h3>
       </div>
